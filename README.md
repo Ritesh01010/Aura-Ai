@@ -1,63 +1,164 @@
-Aura AI - Next-Gen Fitness Intelligence
-Aura AI is a cutting-edge fitness application that leverages computer vision and artificial intelligence to provide real-time form correction, rep counting, and personalized workout analysis. Built with a modern tech stack, it offers a seamless, gamified experience to help users train smarter and safer.
-🚀 Features
-Real-time Pose Detection: Powered by TensorFlow.js and MoveNet for lightning-fast skeletal tracking directly in the browser.
-AI Form Correction: Instant visual and textual feedback on your exercise form (e.g., "Go Lower", "Straighten Back").
-Automated Rep Counting: precise repetition tracking for Squats, Push-ups, Jumping Jacks, and Bicep Curls.
-Gamified Progression: Earn XP, climb the global leaderboard, and unlock achievements based on your consistency and performance.
-Comprehensive Analytics: Visualize your workout history, calorie burn, and progress trends over time.
-Secure Authentication: Robust user management powered by NextAuth.js (Google, GitHub, & Email support).
-Aesthetic UI: A stunning, dark-mode interface designed with Tailwind CSS, featuring glassmorphism and fluid animations.
-🛠️ Tech Stack
-Framework: Next.js 14 (App Router)
-Language: TypeScript
-Styling: Tailwind CSS & Shadcn UI
-AI/ML: TensorFlow.js & MoveNet
-Authentication: NextAuth.js (Auth.js)
-Database: PostgreSQL (via Vercel Postgres)
-ORM: Prisma
-Deployment: Vercel
-📦 Installation
-Clone the repository:
-git clone [https://github.com/yourusername/aura-fitness.git](https://github.com/yourusername/aura-fitness.git)
+
+
+# **Aura AI – Next-Gen Fitness Intelligence**
+
+Aura AI is a next-generation fitness platform that blends computer vision, biomechanics, and artificial intelligence to guide users toward smarter, safer, and more enjoyable workouts. With real-time form correction, automatic rep counting, and gameified progression, it turns ordinary exercise into a personal training experience—right in your browser.
+
+---
+
+## 🚀 **Features**
+
+### **Real-Time Pose Detection**
+
+* Powered by **TensorFlow.js** and **MoveNet**
+* Ultra-fast skeletal tracking in the browser
+* Zero backend video processing and no privacy compromise
+
+### **AI-Driven Form Correction**
+
+* Instant visual cues
+* Smart textual feedback
+* Detects common mistakes like:
+
+  * Back rounding
+  * Shallow squats
+  * Misaligned elbows
+
+### **Automatic Rep Counting**
+
+Supports:
+
+* Squats
+* Push-ups
+* Jumping Jacks
+* Bicep Curls
+
+No manual input. No cheating. Just clean rep tracking.
+
+
+
+### **Comprehensive Analytics**
+
+* Workout history
+* Progress graphs
+* Calorie burn estimation
+* Performance insights
+
+### **Secure Authentication**
+
+* Powered by **NextAuth.js (Auth.js)**
+* Google, GitHub, and Email login
+
+### **Modern, Aesthetic UI**
+
+* Dark mode
+* Glassmorphism
+* Smooth animations
+* Built with **Tailwind CSS** & **Shadcn UI**
+
+---
+
+## 🛠️ **Tech Stack**
+
+| Layer          | Technology                   |
+| -------------- | ---------------------------- |
+| **Framework**  | Next.js 14 (App Router)      |
+| **Language**   | TypeScript                   |
+| **Styling**    | Tailwind CSS, Shadcn UI      |
+| **AI / ML**    | TensorFlow.js, MoveNet       |
+| **Auth**       | NextAuth.js                  |
+| **Database**   | PostgreSQL (Vercel Postgres) |
+| **ORM**        | Prisma                       |
+| **Deployment** | Vercel                       |
+
+---
+
+## 📦 **Installation**
+
+### **1. Clone the Repository**
+
+```bash
+git clone https://github.com/yourusername/aura-fitness.git
 cd aura-fitness
+```
 
+### **2. Install Dependencies**
 
-Install dependencies:
+```bash
 npm install
+```
 
+### **3. Set Up Environment Variables**
 
-Set up environment variables:
-Create a .env file in the root directory and add the following:
+Create a `.env` file:
+
+```
 DATABASE_URL="your_postgres_database_url"
 NEXTAUTH_SECRET="your_nextauth_secret"
 NEXTAUTH_URL="http://localhost:3000"
+
 GOOGLE_CLIENT_ID="your_google_client_id"
 GOOGLE_CLIENT_SECRET="your_google_client_secret"
+```
 
+### **4. Initialize Prisma**
 
-Initialize the database:
+```bash
 npx prisma generate
 npx prisma db push
+```
 
+### **5. Run the Development Server**
 
-Run the development server:
+```bash
 npm run dev
+```
+
+Open:
+👉 **[http://localhost:3000](http://localhost:3000)**
+
+---
+
+## 🧠 **How It Works**
+
+### **1. Camera Input**
+
+Secure webcam access via browser APIs.
+
+### **2. Pose Estimation**
+
+MoveNet processes each frame to identify 17 key body joints.
+
+### **3. Geometry Analysis**
+
+Custom math calculates:
+
+* Joint angles
+* Torso tilt
+* Limb velocity
+* Exercise posture
+
+### **4. State Machine**
+
+Determines phases:
+
+* Down → Up
+* Eccentric → Concentric
+* Valid vs. invalid reps
+
+### **5. Continuous Feedback Loop**
+
+Alerts trigger when biomechanics deviate from safe form.
+
+---
 
 
-Open http://localhost:3000 in your browser to see the application.
-🧠 How It Works
-Camera Input: The app accesses your webcam stream securely.
-Pose Estimation: The MoveNet model analyzes the video feed frame-by-frame to identify key body points (joints).
-Geometry Analysis: Custom algorithms calculate angles between joints (e.g., hip-knee-ankle for squats) to determine exercise states.
-State Machine: The system tracks movement phases (e.g., "Down" vs. "Up") to count reps validly.
-Feedback Loop: If angles deviate from ideal biomechanics, the UI triggers corrective alerts.
-🤝 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
-Fork the project
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
-Commit your Changes (git commit -m 'Add some AmazingFeature')
-Push to the Branch (git push origin feature/AmazingFeature)
-Open a Pull Request
-📄 License
-This project is licensed under the MIT License - see the [LICENSE](
+
+## 📄 **License**
+
+This project is licensed under the **MIT License**.
+See the `LICENSE` file for more details.
+
+---
+
+
