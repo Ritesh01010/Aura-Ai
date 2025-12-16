@@ -1,67 +1,162 @@
-# AI-Powered Exercise Detection App
+# **Aura AI – Next-Gen Fitness Intelligence**
 
-## Overview
-This AI-powered exercise detection app uses TensorFlow.js and the MoveNet model to track body movements and count exercise repetitions in real time. It provides real-time feedback on form quality, rep counting, and XP-based gamification to encourage consistent workouts.
+Aura AI is a next-generation fitness platform that blends computer vision, biomechanics, and artificial intelligence to guide users toward smarter, safer, and more enjoyable workouts. With real-time form correction, automatic rep counting, and gameified progression, it turns ordinary exercise into a personal training experience—right in your browser.
 
-## Features
-- **Exercise Detection**: Detects and counts Squats, Push-ups, Bicep Curls, and more.
-- **Real-time Pose Tracking**: Uses MoveNet for accurate keypoint detection.
-- **Form Analysis**: Provides feedback on exercise form and posture.
-- **AI-Powered Feedback**: Detects incorrect posture and suggests improvements.
-- **XP and Level System**: Earn XP for every rep and level up with progress.
-- **Achievements**: Unlock achievements for reaching milestones.
-- **Leaderboard**: Track user progress with an in-app leaderboard.
-- **User Progress Saving**: Stores user XP, level, and exercise history.
-- **Enhanced UI**: Updated with a more interactive and responsive design.
+---
 
-## Technologies Used
-- **Frontend**: HTML, CSS, JavaScript
-- **AI Model**: TensorFlow.js, MoveNet Pose Detection
-- **Gamification**: XP system, level tracking, achievement notifications
-- **Backend (Upcoming Feature)**: Plan to integrate Firebase for cloud-based storage.
+## 🚀 **Features**
 
-## Installation & Setup
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/naveenkm21/fitness-ai-app.git
-   cd fitness-ai-app
-   ```
-2. Open `public/exercise-detection-updated.html` in a browser.
-3. Allow camera access when prompted.
-4. Select an exercise type and start detecting!
+### **Real-Time Pose Detection**
 
-## Usage
-1. Click **"Start Camera"** to enable webcam tracking.
-2. Choose an exercise from the dropdown menu.
-3. Click **"Detect Exercise"** to begin tracking movements.
-4. Perform reps and get real-time feedback.
-5. Track XP, achievements, and leaderboard rankings.
-6. Click **"Save & Exit"** to store progress.
+* Powered by **TensorFlow.js** and **MoveNet**
+* Ultra-fast skeletal tracking in the browser
+* Zero backend video processing and no privacy compromise
 
-## Supported Exercises
-- **Squats**: Tracks knee bend angle for squat detection.
-- **Push-ups**: Detects elbow angle and body alignment.
-- **Bicep Curls**: Monitors elbow movement for rep counting.
-- **Planks (Upcoming Feature)**: Detects core stability and posture.
-- **Jumping Jacks (Upcoming Feature)**: Counts repetitions accurately.
+### **AI-Driven Form Correction**
 
-## How It Works
-1. **Pose Detection**: MoveNet identifies keypoints (shoulders, elbows, knees, etc.).
-2. **Angle Calculation**: The app calculates joint angles to determine exercise state.
-3. **Repetition Counting**: A transition between states (e.g., standing to squat) counts as a rep.
-4. **Feedback System**: Displays correct/incorrect form messages and posture warnings.
-5. **XP & Achievements**: XP is awarded based on repetitions and form quality.
+* Instant visual cues
+* Smart textual feedback
+* Detects common mistakes like:
 
-## Future Improvements
-- **More Exercises**: Add support for additional workout types.
-- **Voice Feedback**: Audio cues for real-time coaching.
-- **Mobile Optimization**: Improve UI for mobile usage.
-- **Cloud Storage**: Store progress online using Firebase.
-- **AI-Powered Custom Workouts**: Generate personalized workout plans based on performance.
+  * Back rounding
+  * Shallow squats
+  * Misaligned elbows
 
-## License
-This project is open-source and available under the MIT License.
+### **Automatic Rep Counting**
 
-## Contributing
-Feel free to submit issues or pull requests to enhance the app!
+Supports:
+
+* Squats
+* Push-ups
+* Jumping Jacks
+* Bicep Curls
+
+No manual input. No cheating. Just clean rep tracking.
+
+
+
+### **Comprehensive Analytics**
+
+* Workout history
+* Progress graphs
+* Calorie burn estimation
+* Performance insights
+
+### **Secure Authentication**
+
+* Powered by **NextAuth.js (Auth.js)**
+* Google, GitHub, and Email login
+
+### **Modern, Aesthetic UI**
+
+* Dark mode
+* Glassmorphism
+* Smooth animations
+* Built with **Tailwind CSS** & **Shadcn UI**
+
+---
+
+## 🛠️ **Tech Stack**
+
+| Layer          | Technology                   |
+| -------------- | ---------------------------- |
+| **Framework**  | Next.js 14 (App Router)      |
+| **Language**   | TypeScript                   |
+| **Styling**    | Tailwind CSS, Shadcn UI      |
+| **AI / ML**    | TensorFlow.js, MoveNet       |
+| **Auth**       | NextAuth.js                  |
+| **Database**   | PostgreSQL (Vercel Postgres) |
+| **ORM**        | Prisma                       |
+| **Deployment** | Vercel                       |
+
+---
+
+## 📦 **Installation**
+
+### **1. Clone the Repository**
+
+```bash
+git clone https://github.com/yourusername/aura-fitness.git
+cd aura-fitness
+```
+
+### **2. Install Dependencies**
+
+```bash
+npm install
+```
+
+### **3. Set Up Environment Variables**
+
+Create a `.env` file:
+
+```
+DATABASE_URL="your_postgres_database_url"
+NEXTAUTH_SECRET="your_nextauth_secret"
+NEXTAUTH_URL="http://localhost:3000"
+
+GOOGLE_CLIENT_ID="your_google_client_id"
+GOOGLE_CLIENT_SECRET="your_google_client_secret"
+```
+
+### **4. Initialize Prisma**
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### **5. Run the Development Server**
+
+```bash
+npm run dev
+```
+
+Open:
+👉 **[http://localhost:3000](http://localhost:3000)**
+
+---
+
+## 🧠 **How It Works**
+
+### **1. Camera Input**
+
+Secure webcam access via browser APIs.
+
+### **2. Pose Estimation**
+
+MoveNet processes each frame to identify 17 key body joints.
+
+### **3. Geometry Analysis**
+
+Custom math calculates:
+
+* Joint angles
+* Torso tilt
+* Limb velocity
+* Exercise posture
+
+### **4. State Machine**
+
+Determines phases:
+
+* Down → Up
+* Eccentric → Concentric
+* Valid vs. invalid reps
+
+### **5. Continuous Feedback Loop**
+
+Alerts trigger when biomechanics deviate from safe form.
+
+---
+
+
+
+## 📄 **License**
+
+This project is licensed under the **MIT License**.
+See the `LICENSE` file for more details.
+
+---
+
 

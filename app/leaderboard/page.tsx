@@ -16,7 +16,7 @@ export default function LeaderboardPage() {
             <div className="container px-4 md:px-6 text-center">
                 <Badge variant="outline" className="mb-4 border-amber-500/30 bg-amber-500/10 text-amber-300 px-3 py-1 backdrop-blur-md mx-auto w-fit">
                     <Crown className="mr-1 h-3 w-3 fill-amber-500" />
-                    Global Rankings
+                    Upcoming Features
                 </Badge>
                 <h1 className="text-4xl font-bold tracking-tight sm:text-5xl bg-gradient-to-r from-white via-amber-100 to-amber-400 bg-clip-text text-transparent mb-4">
                     Leaderboard
@@ -56,7 +56,7 @@ export default function LeaderboardPage() {
                     <span className="text-xs text-slate-500 font-mono">UPDATED 5M AGO</span>
                   </div>
                   <div className="divide-y divide-slate-800/60">
-                    {Array.from({ length: 10 }).map((_, i) => (
+                    {Array.from({ length: 5 }).map((_, i) => (
                       <div key={i} className="flex items-center justify-between p-4 hover:bg-slate-800/30 transition-colors group">
                         <div className="flex items-center gap-4 md:gap-6">
                           <div className="flex items-center justify-center w-8 font-mono">
@@ -152,50 +152,7 @@ export default function LeaderboardPage() {
                   </div>
                 </div>
 
-                {/* Categories Card */}
-                <div className="rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm">
-                  <div className="p-5 border-b border-slate-800">
-                    <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">Category Breakdown</h2>
-                  </div>
-                  <div className="divide-y divide-slate-800">
-                    <div className="flex items-center justify-between p-4 hover:bg-slate-800/20 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                          <Flame className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-slate-200 text-sm">Calorie Burn</div>
-                          <div className="text-xs text-slate-500">Top 15%</div>
-                        </div>
-                      </div>
-                      <span className="font-mono text-sm text-slate-400">#12</span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 hover:bg-slate-800/20 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                          <Dumbbell className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-slate-200 text-sm">Strength</div>
-                          <div className="text-xs text-slate-500">Top 30%</div>
-                        </div>
-                      </div>
-                      <span className="font-mono text-sm text-slate-400">#28</span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 hover:bg-slate-800/20 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                          <Clock className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-slate-200 text-sm">Consistency</div>
-                          <div className="text-xs text-slate-500">Top 20%</div>
-                        </div>
-                      </div>
-                      <span className="font-mono text-sm text-slate-400">#19</span>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

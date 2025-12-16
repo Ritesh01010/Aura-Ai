@@ -41,63 +41,7 @@ export default function TrainingPage() {
           {/* Main Dashboard Grid */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             
-            {/* Active Plan Card */}
-            <Card className="col-span-full lg:col-span-2 bg-slate-900/50 border-slate-800 backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-[50px] -z-10" />
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <CardTitle className="text-xl text-white">Current Training Plan</CardTitle>
-                    <CardDescription className="text-slate-400">Strength & Conditioning Program</CardDescription>
-                  </div>
-                  <Badge className="bg-violet-600 hover:bg-violet-700 text-white border-0">Week 2 of 8</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-300 font-medium">Overall Progress</span>
-                      <span className="text-violet-400 font-bold">{progress}%</span>
-                    </div>
-                    <Progress value={progress} className="h-2.5 bg-slate-800" />
-                  </div>
-                  
-                  <div className="grid gap-4 sm:grid-cols-3">
-                    <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/50 p-4 hover:border-violet-500/30 transition-colors">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
-                        <Dumbbell className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-white">12</div>
-                        <div className="text-xs text-slate-500 font-medium uppercase tracking-wider">Workouts</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/50 p-4 hover:border-violet-500/30 transition-colors">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400">
-                        <Clock className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-white">5.5h</div>
-                        <div className="text-xs text-slate-500 font-medium uppercase tracking-wider">Total Time</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/50 p-4 hover:border-violet-500/30 transition-colors">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
-                        <Calendar className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-white">4 days</div>
-                        <div className="text-xs text-slate-500 font-medium uppercase tracking-wider">Remaining</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full bg-white text-slate-950 hover:bg-slate-200 font-semibold">Continue Training</Button>
-              </CardFooter>
-            </Card>
+            
 
             {/* Start Session Card */}
             <Card className="bg-gradient-to-b from-slate-900 to-slate-950 border-slate-800 overflow-hidden group">
@@ -133,64 +77,8 @@ export default function TrainingPage() {
               </CardFooter>
             </Card>
 
-            {/* Upcoming Schedule */}
-            <Card className="bg-slate-900/50 border-slate-800">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg text-white">Schedule</CardTitle>
-                <CardDescription className="text-slate-400">Upcoming Sessions</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <div className="space-y-1">
-                  {[
-                    { name: "Upper Body Power", day: "Tomorrow", type: "Strength" }, 
-                    { name: "Core Stability", day: "In 2 days", type: "Mobility" },
-                    { name: "Active Recovery", day: "In 3 days", type: "Recovery" }
-                  ].map((workout, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-800/50 transition-colors group cursor-pointer">
-                      <div className="flex items-center gap-4">
-                        <div className={`flex h-10 w-10 items-center justify-center rounded-lg border border-slate-800 ${i === 0 ? 'bg-violet-500/10 text-violet-400' : 'bg-slate-900 text-slate-500'}`}>
-                          <Dumbbell className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-slate-200 group-hover:text-white transition-colors">{workout.name}</div>
-                          <div className="text-xs text-slate-500">{workout.day} • {workout.type}</div>
-                        </div>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-slate-400 transition-colors" />
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-white">
-                  View Full Calendar
-                </Button>
-              </CardFooter>
-            </Card>
-
-            {/* Analytics Preview */}
-            <Card className="bg-slate-900/50 border-slate-800">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg text-white">Performance</CardTitle>
-                <CardDescription className="text-slate-400">Weekly Analytics</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <div className="aspect-[4/3] relative overflow-hidden rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center group hover:border-violet-500/30 transition-colors">
-                  <div className="absolute inset-0 p-6 flex items-end gap-2 opacity-50 group-hover:opacity-80 transition-opacity">
-                     {[40, 70, 45, 90, 60, 80, 50].map((h, i) => (
-                        <div key={i} className="flex-1 bg-violet-500 rounded-t-sm hover:bg-violet-400 transition-colors" style={{ height: `${h}%` }} />
-                     ))}
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none" />
-                  <BarChart className="h-10 w-10 text-slate-400 relative z-10" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-white">
-                  Detailed Stats
-                </Button>
-              </CardFooter>
-            </Card>
+            
+            
           </div>
 
           {/* Recommended Section */}

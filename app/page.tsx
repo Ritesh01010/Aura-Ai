@@ -36,7 +36,7 @@ export default function Home() {
                 <div className="space-y-6">
                   <Badge variant="outline" className="w-fit border-violet-500/30 bg-violet-500/10 text-violet-300 px-4 py-1.5 backdrop-blur-md shadow-[0_0_15px_-3px_rgba(139,92,246,0.3)]">
                     <Sparkles className="mr-2 h-3.5 w-3.5 fill-violet-500 text-violet-500" />
-                    AI-Powered Form Correction v2.0
+                    AI-Powered Form Correction v1.0
                   </Badge>
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-6xl xl:text-7xl/none bg-gradient-to-br from-white via-slate-100 to-slate-500 bg-clip-text text-transparent">
                     Train Smarter,<br /> Not Harder.
@@ -121,24 +121,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="border-y border-slate-800 bg-slate-950/50 backdrop-blur-sm py-12 relative z-10">
-          <div className="container px-4 md:px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-800/50">
-              {[
-                { label: "Active Users", value: "50k+" },
-                { label: "Reps Counted", value: "2.5M+" },
-                { label: "Workouts", value: "150+" },
-                { label: "App Rating", value: "4.9/5" }
-              ].map((stat, i) => (
-                <div key={i} className="space-y-2 pl-4 first:pl-0">
-                  <h3 className="text-3xl md:text-4xl font-bold text-white">{stat.value}</h3>
-                  <p className="text-xs font-medium text-violet-400 uppercase tracking-widest">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        
 
         {/* Features Grid */}
         <section id="features" className="py-24 bg-slate-950 relative">
@@ -230,9 +213,11 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+                <a href="/training">
                 <Button className="bg-white text-slate-950 hover:bg-slate-200 mt-6 font-semibold px-8">
                   See Technology in Action
                 </Button>
+                </a>
               </div>
               <div className="relative group">
                  {/* Decorative gradient blob */}
@@ -269,16 +254,12 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <a href="/login?signup=true">
                   <Button size="lg" className="bg-violet-600 hover:bg-violet-700 text-white px-8 h-14 text-lg shadow-lg shadow-violet-600/30">
-                    Start Your Free Trial
+                    Start Your Journey
                   </Button>
                 </a>
-                <a href="/training">
-                  <Button size="lg" variant="outline" className="border-slate-700 text-white hover:bg-slate-800/50 px-8 h-14 text-lg backdrop-blur-sm">
-                    View Workout Plans
-                  </Button>
-                </a>
+                
               </div>
-              <p className="text-sm text-slate-500">No credit card required for 14-day trial.</p>
+              <p className="text-sm text-slate-500">Unlock AI-Powered Workouts — No Cost, No Limits.</p>
             </div>
           </div>
         </section>
