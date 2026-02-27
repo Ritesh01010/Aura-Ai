@@ -101,7 +101,7 @@ export default function VideoLibraryPage(): JSX.Element {
             <div className="flex flex-col items-center text-center space-y-6 max-w-3xl mx-auto">
               <Badge variant="outline" className="border-violet-500/30 bg-violet-500/10 text-violet-300 px-3 py-1 backdrop-blur-sm">
                 <Sparkles className="mr-1 h-3 w-3 fill-violet-500" />
-                Pro Library
+                Video Library
               </Badge>
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
                 Master Every Move
@@ -110,23 +110,7 @@ export default function VideoLibraryPage(): JSX.Element {
                 Explore our curated collection of AI-enhanced workouts designed to perfect your form and maximize results.
               </p>
 
-              {/* Floating Search Bar */}
-              <div className="relative w-full max-w-md mt-4 group">
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
-                <div className="relative flex items-center bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-full p-1.5 shadow-xl focus-within:border-violet-500/50 transition-all">
-                  <div className="pl-4 text-slate-500 group-focus-within:text-violet-400 transition-colors">
-                    <Search className="h-5 w-5" />
-                  </div>
-                  <Input
-                    type="text"
-                    placeholder="Search workouts..."
-                    className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-slate-200 placeholder:text-slate-500 h-10 text-base"
-                  />
-                  <Button size="sm" className="rounded-full bg-violet-600 hover:bg-violet-700 h-9 px-6 transition-all hover:shadow-[0_0_20px_-5px_rgba(124,58,237,0.5)]">
-                    Search
-                  </Button>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -145,11 +129,6 @@ export default function VideoLibraryPage(): JSX.Element {
                   </TabsTrigger>
                 ))}
               </TabsList>
-
-              <Button variant="outline" className="border-slate-800 bg-slate-900/50 text-slate-300 hover:bg-slate-800 hover:text-white hover:border-violet-500/30 gap-2 rounded-full">
-                <Filter className="h-4 w-4" />
-                Filters
-              </Button>
             </div>
 
             {/* Content Grid: one TabsContent per category (dynamically filtered) */}
@@ -309,16 +288,7 @@ function VideoCard({ video, index }: { video: Video; index: number }) {
             </h3>
           </div>
 
-          <div className="mt-auto pt-3 border-t border-slate-800 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
-              <Flame className="h-3.5 w-3.5 text-orange-500" />
-              <span>{video.calories} kcal</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
-              <Zap className={`h-3.5 w-3.5 ${video.level === "Advanced" ? "text-red-400" : "text-emerald-400"}`} />
-              <span>{video.level}</span>
-            </div>
-          </div>
+          
         </div>
       </a>
     </div>

@@ -224,7 +224,7 @@ export default function Home() {
                 Join thousands of users who have already leveled up their training with Aura's AI precision.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <a href="/login?signup=true">
+                <a href="/">
                   <Button size="lg" className="bg-violet-600 hover:bg-violet-700 text-white px-8 h-14 text-lg shadow-lg shadow-violet-600/30">
                     Start Your Journey
                   </Button>
