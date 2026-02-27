@@ -58,20 +58,7 @@ export default function Home() {
                     </Button>
                   </a>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-slate-500 pt-2">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3, 4].map((i) => (
-                      <Avatar key={i} className="border-2 border-slate-950 h-9 w-9">
-                        <AvatarImage src={`/placeholder.svg?text=U${i}`} />
-                        <AvatarFallback className="bg-slate-800 text-xs">U{i}</AvatarFallback>
-                      </Avatar>
-                    ))}
-                  </div>
-                  <div className="flex flex-col">
-                     <span className="text-slate-300 font-medium">10,000+ Athletes</span>
-                     <span className="text-xs">Trusted by pros worldwide</span>
-                  </div>
-                </div>
+                
               </div>
               
               {/* Hero Image/Graphic area */}
@@ -139,32 +126,17 @@ export default function Home() {
                 {
                   icon: Video,
                   title: "Computer Vision Library",
-                  desc: "Access 500+ exercises with real-time skeletal tracking overlays to master your technique."
+                  desc: "Access 50+ exercises with real-time skeletal tracking overlays to master your technique."
                 },
                 {
                   icon: Activity,
                   title: "Real-time Correction",
-                  desc: "Get instant audio and visual feedback if your knees cave in or your back rounds."
+                  desc: "Get instant audio feedback if your knees cave in or your back rounds."
                 },
                 {
                   icon: Trophy,
                   title: "Global Leaderboards",
                   desc: "Compete with friends and the global community. Earn XP for perfect form, not just reps."
-                },
-                {
-                  icon: Target,
-                  title: "Personalized Plans",
-                  desc: "AI adapts your workout intensity daily based on your performance and fatigue levels."
-                },
-                {
-                  icon: Zap,
-                  title: "Velocity Tracking",
-                  desc: "Measure the speed of your lifts to optimize for power or hypertrophy."
-                },
-                {
-                  icon: Users,
-                  title: "Community Challenges",
-                  desc: "Join monthly challenges to stay motivated and win exclusive digital badges."
                 }
               ].map((feature, i) => (
                 <Card key={i} className="bg-slate-900/40 border-slate-800 hover:border-violet-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-500/5 group">
@@ -197,7 +169,7 @@ export default function Home() {
                   {[
                     { title: "Setup your space", desc: "Place your phone or laptop on the floor or a table. No special equipment needed." },
                     { title: "Select your workout", desc: "Choose from our library of AI-supported exercises or start a custom routine." },
-                    { title: "Start moving", desc: "Our AI tracks 33 distinct points on your body to ensure perfect biomechanics." }
+                    { title: "Start moving", desc: "Our AI tracks distinct points on your body to ensure perfect biomechanics." }
                   ].map((step, i) => (
                     <div key={i} className="flex gap-6 relative">
                       {/* Connecting Line */}

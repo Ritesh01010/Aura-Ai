@@ -1,6 +1,9 @@
-// app/library/page.tsx
-// Loads local videos from /public/videos/*.mp4, supports YouTube/Drive, and filters by category tabs.
-// Replace your existing file with this.
+"use client"
+
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/utils/supabase/client"
+import AuthGuard from "@/components/auth-guard"
 
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -63,6 +66,21 @@ type Video = {
 };
 
 export default function VideoLibraryPage(): JSX.Element {
+    const supabase = createClient()
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (!user) {
+        router.push("/login")
+      }
+    }
+
+    checkAuth()
+  }, [])
+
   // build unique categories dynamically from the 'all' list
   const categories = React.useMemo(() => {
     const cats = Array.from(new Set(videoData.all.map((v) => (v.category || "Uncategorized").trim())));
@@ -70,6 +88,7 @@ export default function VideoLibraryPage(): JSX.Element {
   }, []);
 
   return (
+     <AuthGuard>
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-50 selection:bg-violet-500/30">
       <Header />
       <main className="flex-1">
@@ -151,6 +170,7 @@ export default function VideoLibraryPage(): JSX.Element {
         </div>
       </main>
     </div>
+    </AuthGuard>
   );
 }
 

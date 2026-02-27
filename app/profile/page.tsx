@@ -1,6 +1,6 @@
 "use client"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createClient } from "@/utils/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -21,12 +21,91 @@ import {
   Edit,
   User,
   Zap,
+  Crown,
   Menu
 } from "lucide-react"
 import Header from "../../components/header"
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("overview")
+  // ===== STEP 2: Fetch logged-in user + profile =====
+  const supabase = createClient()
+  const [profile, setProfile] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+
+      // Not logged in → redirect
+      if (!user) {
+        window.location.href = "/login"
+        return
+      }
+
+      // Fetch profile
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single()
+
+      if (error) {
+        console.error("Profile fetch error:", error)
+      } else {
+        setProfile(data)
+      }
+
+      setLoading(false)
+    }
+
+    loadProfile()
+  }, [])
+  const handleAvatarUpload = async (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = event.target.files?.[0]
+  if (!file || !profile) return
+
+  // limit size (2MB)
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Image must be under 2MB")
+    return
+  }
+
+  const fileExt = file.name.split(".").pop()
+  const filePath = `${profile.id}.${fileExt}`
+
+  // upload
+  const { error: uploadError } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, file, { upsert: true })
+
+  if (uploadError) {
+    console.error("Upload error:", uploadError)
+    return
+  }
+
+  // public URL
+  const { data } = supabase.storage
+    .from("avatars")
+    .getPublicUrl(filePath)
+
+  // save to profile
+  const { error: updateError } = await supabase
+    .from("profiles")
+    .update({ avatar_url: data.publicUrl })
+    .eq("id", profile.id)
+
+  if (updateError) {
+    console.error("Profile update error:", updateError)
+    return
+  }
+
+  // update UI
+  setProfile({ ...profile, avatar_url: data.publicUrl })
+  window.dispatchEvent(new Event("avatar-updated"))
+}
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-50 selection:bg-violet-500/30">
@@ -46,25 +125,30 @@ export default function ProfilePage() {
                         <div className="relative group">
                             <div className="absolute -inset-0.5 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-full opacity-75 blur group-hover:opacity-100 transition duration-500"></div>
                             <Avatar className="h-32 w-32 border-4 border-slate-950 relative">
-                                <AvatarImage src="/placeholder.svg?height=128&width=128&text=User" className="object-cover" />
+                                <AvatarImage src={ 
+                                  profile?.avatar_url ? `${profile.avatar_url}?t=${Date.now()}`
+                                  : "/placeholder.svg?height=128&width=128&text=User"}
+                                  className="object-cover"/>
+
                                 <AvatarFallback className="bg-slate-800 text-2xl font-bold text-slate-400">UN</AvatarFallback>
                             </Avatar>
-                            <Button size="icon" variant="secondary" className="absolute bottom-1 right-1 h-8 w-8 rounded-full border-2 border-slate-950 bg-slate-800 hover:bg-slate-700 text-white shadow-lg">
+                            <Button size="icon" variant="secondary" onClick={() => document.getElementById("avatar-upload")?.click()} className="absolute bottom-1 right-1 h-8 w-8 rounded-full border-2 border-slate-950 bg-slate-800 hover:bg-slate-700 text-white shadow-lg">
                                 <Camera className="h-4 w-4" />
                                 <span className="sr-only">Change avatar</span>
                             </Button>
+                            <input  type="file"  id="avatar-upload"   accept="image/*"  hidden  onChange={handleAvatarUpload} />
                         </div>
                         
                         <div className="space-y-2 mb-2">
                             <div className="flex items-center gap-3">
-                                <h1 className="text-3xl font-bold text-white">Alex Johnson</h1>
+                                <h1 className="text-3xl font-bold text-white"> {loading ? "Loading..." : profile?.full_name}</h1>
                                 <Badge className="bg-violet-500/20 text-violet-200 hover:bg-violet-500/30 border-violet-500/30 px-2 py-0.5 text-xs">
-                                    <Zap className="w-3 h-3 mr-1 fill-current" /> Level 12
+                                    <Zap className="w-3 h-3 mr-1 fill-current" /> Level 1
                                 </Badge>
                             </div>
                             <div className="flex flex-wrap gap-4 text-sm text-slate-400">
-                                <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Joined Jan 2023</span>
-                                <span className="flex items-center gap-1"><Trophy className="w-4 h-4" /> 125 Workouts</span>
+                                <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Joined {profile?.created_at && new Date(profile.created_at).toDateString()}</span>
+                                <span className="flex items-center gap-1"><Trophy className="w-4 h-4" /> 1xx Workouts</span>
                             </div>
                         </div>
                     </div>
@@ -74,9 +158,7 @@ export default function ProfilePage() {
                             <Edit className="h-4 w-4" />
                             <span>Edit Profile</span>
                         </Button>
-                        <Button variant="outline" size="icon" className="border-slate-700 bg-slate-900/50 text-slate-300 hover:bg-slate-800 hover:text-white transition-all">
-                            <Settings className="h-4 w-4" />
-                        </Button>
+                        
                     </div>
                 </div>
             </div>
@@ -89,6 +171,12 @@ export default function ProfilePage() {
                 <TabsTrigger value="stats" className="rounded-full py-2 text-slate-400 data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">Statistics</TabsTrigger>
                 <TabsTrigger value="history" className="rounded-full py-2 text-slate-400 data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">History</TabsTrigger>
               </TabsList>
+              <div className="container px-4 md:px-6 text-center">
+                <Badge variant="outline" className="mb-4 border-amber-500/30 bg-amber-500/10 text-amber-300 px-3 py-1 backdrop-blur-md mx-auto w-fit">
+                    <Crown className="mr-1 h-3 w-3 fill-amber-500" />
+                    Upcoming Features
+                </Badge>
+              </div>
 
               <TabsContent value="overview" className="space-y-8 animate-in fade-in-50 slide-in-from-bottom-4 duration-500">
                 
@@ -170,105 +258,6 @@ export default function ProfilePage() {
                     </CardContent>
                   </Card>
                 </div>
-
-                <div className="grid gap-6 md:grid-cols-2">
-                  {/* Recent Activity */}
-                  <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm h-full">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                          <div>
-                              <CardTitle className="text-white">Recent Activity</CardTitle>
-                              <CardDescription className="text-slate-400">Your latest workout sessions</CardDescription>
-                          </div>
-                          <Button variant="ghost" size="sm" className="text-violet-400 hover:text-violet-300 hover:bg-violet-500/10">View All</Button>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {["Upper Body Strength", "HIIT Cardio", "Core Workout"].map((workout, i) => (
-                          <div key={i} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-800/50 transition-colors group cursor-pointer border border-transparent hover:border-slate-800">
-                            <div className={`flex h-12 w-12 items-center justify-center rounded-full ${i===0 ? 'bg-blue-500/10 text-blue-400' : i===1 ? 'bg-orange-500/10 text-orange-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
-                              <Dumbbell className="h-6 w-6" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="font-medium text-white group-hover:text-violet-300 transition-colors">{workout}</div>
-                              <div className="text-xs text-slate-500 flex items-center gap-2">
-                                <span>{i === 0 ? "Today" : i === 1 ? "Yesterday" : "3 days ago"}</span>
-                                <span className="w-1 h-1 rounded-full bg-slate-700" />
-                                <span>{i === 0 ? "25 min" : i === 1 ? "35 min" : "20 min"}</span>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                                <div className="text-sm font-bold text-slate-300">{i === 0 ? "320" : i === 1 ? "450" : "180"}</div>
-                                <div className="text-[10px] text-slate-500 uppercase">Kcal</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Achievements */}
-                  <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm h-full">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                          <div>
-                              <CardTitle className="text-white">Achievements</CardTitle>
-                              <CardDescription className="text-slate-400">Badges and milestones</CardDescription>
-                          </div>
-                          <Button variant="ghost" size="sm" className="text-violet-400 hover:text-violet-300 hover:bg-violet-500/10">View All</Button>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-3 gap-4">
-                        {[
-                          { icon: Flame, name: "Burner", desc: "5000 kcal", color: "text-orange-500", bg: "bg-orange-500/10" },
-                          { icon: Calendar, name: "Consistent", desc: "7 day streak", color: "text-blue-500", bg: "bg-blue-500/10" },
-                          { icon: Dumbbell, name: "Strong", desc: "10 strength", color: "text-violet-500", bg: "bg-violet-500/10" },
-                          { icon: Heart, name: "Cardio", desc: "15 sessions", color: "text-pink-500", bg: "bg-pink-500/10" },
-                          { icon: Trophy, name: "Top 50", desc: "Rank up", color: "text-yellow-500", bg: "bg-yellow-500/10" },
-                          { icon: Clock, name: "Dedicated", desc: "10 hours", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-                        ].map((achievement, i) => (
-                          <div key={i} className="flex flex-col items-center text-center p-3 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-800 cursor-pointer group">
-                            <div className={`flex h-12 w-12 items-center justify-center rounded-full ${achievement.bg} ${achievement.color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
-                              <achievement.icon className="h-6 w-6" />
-                            </div>
-                            <div className="text-xs font-bold text-slate-300 group-hover:text-white">{achievement.name}</div>
-                            <div className="text-[10px] text-slate-500">{achievement.desc}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="stats" className="mt-6 space-y-6 animate-in fade-in-50 slide-in-from-bottom-4">
-                <Card className="bg-slate-900/40 border-slate-800">
-                  <CardHeader>
-                    <CardTitle className="text-white">Workout Statistics</CardTitle>
-                    <CardDescription className="text-slate-400">Metrics over time</CardDescription>
-                  </CardHeader>
-                  <CardContent className="h-[400px] flex flex-col items-center justify-center text-slate-500">
-                    <div className="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center mb-4 animate-pulse">
-                         <BarChart3 className="h-10 w-10 text-slate-600" />
-                    </div>
-                    <p>Detailed visualization engine loading...</p>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="history" className="mt-6 animate-in fade-in-50 slide-in-from-bottom-4">
-                <Card className="bg-slate-900/40 border-slate-800">
-                   <CardHeader>
-                     <CardTitle className="text-white">Full History</CardTitle>
-                   </CardHeader>
-                   <CardContent>
-                      <div className="text-center py-12 text-slate-500">
-                         <p>Complete workout history logs.</p>
-                      </div>
-                   </CardContent>
-                </Card>
               </TabsContent>
             </Tabs>
         </div>

@@ -182,6 +182,10 @@
   <script>
     // ---------- App state ----------
     const state = {
+      voiceEnabled: true,
+      lastSpokenTime: 0,
+      speakCooldown: 2000,
+      lastSpokenMessage: "",
       detector: null,
       isModelLoaded: false,
       isDetecting: false,
@@ -335,6 +339,7 @@
       resetCounters();
       updateDebugInfo("Detection started for " + state.selectedExerciseType);
       detectPoses();
+      speak("AI training started", true);
     }
 
     function stopDetection() {
@@ -349,6 +354,7 @@
       elements.scanLine.classList.add('hidden');
       ctx.clearRect(0,0,elements.canvas.width, elements.canvas.height);
       updateDebugInfo("Detection stopped");
+      speak("Workout paused", true);
     }
 
     // ---------- Main loop ----------
@@ -523,6 +529,9 @@
         const severityClass = s.severity === 'high' ? 'suggestion-high' : s.severity === 'medium' ? 'suggestion-medium' : 'suggestion-low';
         div.innerHTML = `<div class="${severityClass}">${s.message}</div><div class="text-[11px] text-slate-400">${s.hint || ''}</div>`;
         elements.correctionSuggestions.appendChild(div);
+        if (s.severity === "high") {
+        speak(s.message);
+        }
       });
     }
 
@@ -548,7 +557,14 @@
         const ankCenter = [(lAnk.x+rAnk.x)/2, (lAnk.y+rAnk.y)/2];
         const kneeAngle = calculateAngle(hipCenter, kneeCenter, ankCenter);
         if (kneeAngle < 120) {
-          if (state.lastPoseState === "standing") { state.reps++; elements.repCount.textContent = state.reps; updateDebugInfo("SQUAT REP: "+state.reps); }
+          if (state.lastPoseState === "standing") { 
+            state.reps++; 
+            elements.repCount.textContent = state.reps; 
+            updateDebugInfo("SQUAT REP: "+state.reps); 
+            speak("Good squat!");
+            if (state.reps % 5 === 0) {
+              speak("Keep going! Strong work!");}
+          }
           state.lastPoseState = "squatting"; state.currentExercise = "Down";
         } else if (kneeAngle > 160) {
           state.lastPoseState = "standing"; state.currentExercise = "Up";
@@ -569,7 +585,7 @@
         const rightElbowAngle = calculateAngle([rSh.x,rSh.y],[rEl.x,rEl.y],[rWr.x,rWr.y]);
         const elbowAngle = (leftElbowAngle + rightElbowAngle)/2;
         if (elbowAngle < 90) {
-          if (state.lastPoseState === "up") { state.reps++; elements.repCount.textContent = state.reps; updateDebugInfo("PUSHUP REP: "+state.reps); }
+          if (state.lastPoseState === "up") { state.reps++; elements.repCount.textContent = state.reps; updateDebugInfo("PUSHUP REP: "+state.reps); speak("Nice push up!");}
           state.lastPoseState = "down"; state.currentExercise = "Down";
         } else if (elbowAngle > 150) {
           state.lastPoseState = "up"; state.currentExercise = "Up";
@@ -590,7 +606,7 @@
         const sNorm = shoulderDist/torso;
         const aNorm = ankleDist/torso;
         if (sNorm > 1.5 && aNorm > 0.8) {
-          if (state.lastPoseState === "closed") { state.reps++; elements.repCount.textContent = state.reps; updateDebugInfo("JUMP JACK REP: "+state.reps); }
+          if (state.lastPoseState === "closed") { state.reps++; elements.repCount.textContent = state.reps; updateDebugInfo("JUMP JACK REP: "+state.reps); speak("Great jump!");}
           state.lastPoseState = "open"; state.currentExercise = "Open";
         } else if (sNorm < 1.2 && aNorm < 0.5) {
           state.lastPoseState = "closed"; state.currentExercise = "Closed";
@@ -604,7 +620,7 @@
       if (rSh && rEl && rWr && rSh.score>state.confidenceThreshold && rEl.score>state.confidenceThreshold && rWr.score>state.confidenceThreshold) {
         const elbowAngle = calculateAngle([rSh.x,rSh.y],[rEl.x,rEl.y],[rWr.x,rWr.y]);
         if (elbowAngle < 80) {
-          if (state.lastPoseState === "down") { state.reps++; elements.repCount.textContent = state.reps; updateDebugInfo("BICEP REP: "+state.reps); }
+          if (state.lastPoseState === "down") { state.reps++; elements.repCount.textContent = state.reps; updateDebugInfo("BICEP REP: "+state.reps); speak("Good curl!");}
           state.lastPoseState = "up"; state.currentExercise = "Curled";
         } else if (elbowAngle > 150) {
           state.lastPoseState = "down"; state.currentExercise = "Extended";
@@ -690,7 +706,30 @@
       if (shoulderStability > 30) suggestions.push({message: "Shoulder moving too much during curl.", severity: "high", hint: "Keep shoulder stable; avoid swinging."});
       return suggestions;
     }
+    // ---------- Voice System ----------
+    function speak(message, force = false) {
+      if (!state.voiceEnabled) return;
 
+      const now = Date.now();
+
+      if (!force) {
+      if (now - state.lastSpokenTime < state.speakCooldown) return;
+      if (message === state.lastSpokenMessage) return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const speech = new SpeechSynthesisUtterance(message);
+      speech.lang = "en-US";
+      speech.rate = 1;
+      speech.pitch = 1;
+
+      window.speechSynthesis.speak(speech);
+
+      state.lastSpokenTime = now;
+      state.lastSpokenMessage = message;
+    }
+    
     // ---------- Start app ----------
     window.addEventListener('load', init);
   </script>

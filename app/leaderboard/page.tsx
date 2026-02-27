@@ -1,3 +1,9 @@
+"use client"
+import AuthGuard from "@/components/auth-guard"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/utils/supabase/client"
+
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
@@ -6,7 +12,23 @@ import { Trophy, Medal, Award, Filter, ArrowUp, ArrowDown, Flame, Dumbbell, Cloc
 import Header from "../../components/header"
 
 export default function LeaderboardPage() {
+    const supabase = createClient()
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (!user) {
+        router.push("/login")
+      }
+    }
+
+    checkAuth()
+  }, [])
+
   return (
+    <AuthGuard>
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-50 selection:bg-violet-500/30">
       <Header />
       <main className="flex-1">
@@ -159,5 +181,6 @@ export default function LeaderboardPage() {
         </div>
       </main>
     </div>
+    </AuthGuard>
   )
 }
