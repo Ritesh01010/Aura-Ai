@@ -189,40 +189,39 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <Label htmlFor="signup-email" className="text-slate-300">Email</Label>
                     <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-  
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
                     <Input 
-                    id="signup-password" 
-                    type={showPassword ? "text" : "password"}
+                    id="signup-email"
+                    type="email"
+                    placeholder="m@example.com"
                     required 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-9 pr-10 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"
-                    />
-
-                    <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-slate-500 hover:text-white transition"
-                    >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-9 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="signup-password" className="text-slate-300">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-                      <Input 
-                        id="signup-password" 
-                        type="password" 
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+    
+                        <Input 
+                        id="signup-password"
+                        type={showPassword ? "text" : "password"}
                         required 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-9 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"
-                      />
+                        className="pl-9 pr-10 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"/>
+
+                        <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-3 text-slate-500 hover:text-white transition">
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
                     </div>
-                  </div>
                   <Button 
                     type="submit" 
                     disabled={loading}
