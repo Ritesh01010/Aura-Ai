@@ -47,9 +47,9 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="/login?signup=true">
+                  <a href="/training">
                     <Button size="lg" className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white gap-2 h-12 px-8 shadow-lg shadow-violet-600/25 transition-all hover:scale-105">
-                      Start Free Trial <ArrowRight className="h-4 w-4" />
+                      Start Free Training <ArrowRight className="h-4 w-4" />
                     </Button>
                   </a>
                   <a href="/library">

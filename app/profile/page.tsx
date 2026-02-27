@@ -142,24 +142,20 @@ export default function ProfilePage() {
                         <div className="space-y-2 mb-2">
                             <div className="flex items-center gap-3">
                                 <h1 className="text-3xl font-bold text-white"> {loading ? "Loading..." : profile?.full_name}</h1>
-                                <Badge className="bg-violet-500/20 text-violet-200 hover:bg-violet-500/30 border-violet-500/30 px-2 py-0.5 text-xs">
-                                    <Zap className="w-3 h-3 mr-1 fill-current" /> Level 1
-                                </Badge>
                             </div>
                             <div className="flex flex-wrap gap-4 text-sm text-slate-400">
                                 <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Joined {profile?.created_at && new Date(profile.created_at).toDateString()}</span>
-                                <span className="flex items-center gap-1"><Trophy className="w-4 h-4" /> 1xx Workouts</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div className="flex gap-3 mb-2">
+                    {/* <div className="flex gap-3 mb-2">
                         <Button variant="outline" className="gap-2 border-slate-700 bg-slate-900/50 text-slate-300 hover:bg-slate-800 hover:text-white transition-all">
                             <Edit className="h-4 w-4" />
                             <span>Edit Profile</span>
                         </Button>
                         
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
