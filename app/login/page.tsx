@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dumbbell, ArrowRight, Sparkles, Lock, Mail, User } from "lucide-react"
+import { Dumbbell, ArrowRight, Sparkles, Lock, Mail, User, Eye, EyeOff } from "lucide-react"
 import { useRouter } from "next/navigation"
 // Use relative path to avoid alias issues
 import { createClient } from "../../utils/supabase/client"
@@ -15,6 +15,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [fullName, setFullName] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
@@ -140,14 +141,23 @@ export default function LoginPage() {
                     </div>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+  
                       <Input 
-                        id="password" 
-                        type="password" 
-                        required 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="pl-9 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"
+                      id="password" 
+                      type={showPassword ? "text" : "password"}
+                      required 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="pl-9 pr-10 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"
                       />
+
+                      <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-3 text-slate-500 hover:text-white transition"
+                      >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
                     </div>
                   </div>
                   <Button 
@@ -179,16 +189,24 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <Label htmlFor="signup-email" className="text-slate-300">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-                      <Input 
-                        id="signup-email" 
-                        type="email" 
-                        placeholder="m@example.com" 
-                        required 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="pl-9 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"
-                      />
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+  
+                    <Input 
+                    id="signup-password" 
+                    type={showPassword ? "text" : "password"}
+                    required 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-9 pr-10 bg-slate-950/50 border-slate-800 text-white focus:border-violet-500 focus:ring-violet-500/20 placeholder:text-slate-600"
+                    />
+
+                    <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-3 text-slate-500 hover:text-white transition"
+                    >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
                     </div>
                   </div>
                   <div className="space-y-2">
