@@ -19,7 +19,7 @@ const videoData = {
     { title: "Shoulder Workout", url: "/videos/Shoulder Workout.mp4", category: "Shoulder", calories: 250, level: "Intermediate", duration: "25 min" },
     { title: "Pull Ups", url: "/videos/Pull ups.mp4", category: "Back", calories: 180, level: "Advanced", duration: "15 min" },
     { title: "Hip Thrusts", url: "/videos/hip thrusts.mp4", category: "Glutes", calories: 220, level: "Intermediate", duration: "20 min" },
-    { title: "Dumbbell Pull Up", url: "/videos/Dumbbell pull up.mp4", category: "Back", calories: 210, level: "Intermediate", duration: "15 min" },
+    { title: "Dumbbell Pull Up", url: "/videos/Dumbbell Pull up.mp4", category: "Back", calories: 210, level: "Intermediate", duration: "15 min" },
     { title: "Chest Flys", url: "/videos/Chest Flys.mp4", category: "Chest", calories: 230, level: "Intermediate", duration: "20 min" },
     { title: "Cable Kickbacks", url: "/videos/cable kickbacks.mp4", category: "Glutes", calories: 160, level: "Beginner", duration: "18 min" },
     { title: "Beginner Pushups", url: "/videos/Begginer Pushups.mp4", category: "Chest", calories: 120, level: "Beginner", duration: "10 min" },
@@ -28,7 +28,7 @@ const videoData = {
     { title: "Shoulder Form", url: "/videos/shoulder form.mp4", category: "Shoulder", calories: 150, level: "Beginner", duration: "18 min" },
     { title: "Planks", url: "/videos/Planks.mp4", category: "Core", calories: 50, level: "Beginner", duration: "5 min" },
     { title: "Head Pull", url: "/videos/Head Pull.mp4", category: "Back", calories: 130, level: "Intermediate", duration: "12 min" },
-    { title: "Deadlifts", url: "/videos/Deadlifts.mp4", category: "Legs", calories: 300, level: "Advanced", duration: "25 min" },
+    { title: "Deadlifts", url: "/videos/DeadLifts.mp4", category: "Legs", calories: 300, level: "Advanced", duration: "25 min" },
     { title: "Chair Workout", url: "/videos/Chair Workout.mp4", category: "Full Body", calories: 190, level: "Beginner", duration: "20 min" },
     { title: "Cable Flys", url: "/videos/cable flys.mp4", category: "Chest", calories: 170, level: "Intermediate", duration: "15 min" },
 
