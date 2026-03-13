@@ -186,6 +186,7 @@
       lastSpokenTime: 0,
       speakCooldown: 2000,
       lastSpokenMessage: "",
+      mistakeMemory: {},
       detector: null,
       isModelLoaded: false,
       isDetecting: false,
@@ -199,6 +200,7 @@
       confidenceThreshold: 0.25, // considered "strong"
       debugMode: true,
       mirrorDrawing: true // mirror drawings to match mirrored video element
+      
     };
 
     // ---------- Elements ----------
@@ -358,30 +360,58 @@
     }
 
     // ---------- Main loop ----------
-    async function detectPoses() {
-      if (!state.isDetecting) return;
-      try {
-        const poses = await state.detector.estimatePoses(elements.video);
-        ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
+async function detectPoses() {
 
-        if (poses && poses.length > 0) {
-          const pose = poses[0];
-          drawSkeleton(pose);                    // robust drawing (mirrored to match video)
-          state.poseHistory.push(pose);
-          if (state.poseHistory.length > 5) state.poseHistory.shift();
-          analyzeExercise(pose);
-        } else {
-          updateDebugInfo("No pose detected in frame");
-          elements.confidenceDisplay.textContent = "--%";
-        }
+  if (!state.isDetecting) return;
 
-        state.animationId = requestAnimationFrame(detectPoses);
-      } catch (err) {
-        console.error(err);
-        updateDebugInfo("Detection error: " + err.message);
-        stopDetection();
+  try {
+
+    const poses = await state.detector.estimatePoses(elements.video);
+
+    ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
+
+    if (poses && poses.length > 0) {
+
+      const pose = poses[0];
+
+      // Save history for smoothing
+      state.poseHistory.push(pose);
+
+      if (state.poseHistory.length > 5) {
+        state.poseHistory.shift();
       }
+
+      const smoothedKeypoints = getSmoothedKeypoints();
+
+      let finalPose;
+
+      if (smoothedKeypoints) {
+        finalPose = { keypoints: smoothedKeypoints };
+      } else {
+        finalPose = pose;
+      }
+
+      drawSkeleton(finalPose);
+      analyzeExercise(finalPose);
+
+    } else {
+
+      updateDebugInfo("No pose detected in frame");
+      elements.confidenceDisplay.textContent = "--%";
+
     }
+
+    state.animationId = requestAnimationFrame(detectPoses);
+
+  } catch (err) {
+
+    console.error(err);
+    updateDebugInfo("Detection error: " + err.message);
+    stopDetection();
+
+  }
+
+}
 
     // ---------- Robust drawSkeleton (mirroring + low-threshold visualization) ----------
     function drawSkeleton(pose) {
@@ -495,6 +525,8 @@
         case 'squat':
           detectSquat(keypointMap);
           suggestions = suggestSquatCorrections(keypointMap);
+           const bodyFeedback = checkSquatBodyParts(keypointMap);
+           suggestions = [...suggestions, ...bodyFeedback];
           break;
         case 'pushup':
           detectPushup(keypointMap);
@@ -530,7 +562,7 @@
         div.innerHTML = `<div class="${severityClass}">${s.message}</div><div class="text-[11px] text-slate-400">${s.hint || ''}</div>`;
         elements.correctionSuggestions.appendChild(div);
         if (s.severity === "high") {
-        speak(s.message);
+        speakMistake(s.message, s.message);
         }
       });
     }
@@ -543,6 +575,46 @@
       return angle;
     }
     function distance(a,b) { return Math.hypot(a.x-b.x, a.y-b.y); }
+    function getSmoothedKeypoints() {
+
+  const history = state.poseHistory;
+  if (history.length === 0) return null;
+
+  const smoothed = [];
+
+  const keypointNames = history[0].keypoints.map(k => k.name);
+
+  keypointNames.forEach(name => {
+
+    let sumX = 0;
+    let sumY = 0;
+    let sumScore = 0;
+    let count = 0;
+
+    history.forEach(pose => {
+      const kp = pose.keypoints.find(k => k.name === name);
+
+      if (kp && kp.score > 0.05) {
+        sumX += kp.x;
+        sumY += kp.y;
+        sumScore += kp.score;
+        count++;
+      }
+    });
+
+    if (count > 0) {
+      smoothed.push({
+        name: name,
+        x: sumX / count,
+        y: sumY / count,
+        score: sumScore / count
+      });
+    }
+
+  });
+
+  return smoothed;
+}
 
     // Detection & suggestion functions (kept from your prior logic — unchanged semantics)
     // Squat detection
@@ -653,6 +725,84 @@
       if (hipDiff > torsoHeight * 0.08) suggestions.push({message: "Hip tilt / imbalance detected.", severity: "medium", hint: "Distribute weight evenly on both feet; keep pelvis level."});
       return suggestions;
     }
+    function checkSquatBodyParts(kp) {
+
+  let feedback = [];
+
+  const lHip = kp.left_hip;
+  const rHip = kp.right_hip;
+  const lKnee = kp.left_knee;
+  const rKnee = kp.right_knee;
+  const lAnk = kp.left_ankle;
+  const rAnk = kp.right_ankle;
+  const lSh = kp.left_shoulder;
+  const rSh = kp.right_shoulder;
+
+  if (!lHip || !rHip || !lKnee || !rKnee || !lAnk || !rAnk) return feedback;
+
+  const hipCenter = [(lHip.x+rHip.x)/2,(lHip.y+rHip.y)/2];
+  const kneeCenter = [(lKnee.x+rKnee.x)/2,(lKnee.y+rKnee.y)/2];
+  const ankCenter = [(lAnk.x+rAnk.x)/2,(lAnk.y+rAnk.y)/2];
+
+  const kneeAngle = calculateAngle(hipCenter,kneeCenter,ankCenter);
+
+  if(kneeAngle > 150){
+    feedback.push({
+      message:"Go lower in the squat",
+      severity:"medium"
+    });
+  }
+
+  if(kneeAngle < 80){
+    feedback.push({
+      message:"Too low, control the squat depth",
+      severity:"low"
+    });
+  }
+
+  const leftToeOver = lKnee.x - lAnk.x;
+  const rightToeOver = rKnee.x - rAnk.x;
+
+  if(leftToeOver > 20){
+    feedback.push({
+      message:"Left knee moving too far forward",
+      severity:"high"
+    });
+  }
+
+  if(rightToeOver > 20){
+    feedback.push({
+      message:"Right knee moving too far forward",
+      severity:"high"
+    });
+  }
+
+  const hipDiff = Math.abs(lHip.y - rHip.y);
+
+  if(hipDiff > 30){
+    feedback.push({
+      message:"Keep your hips level",
+      severity:"medium"
+    });
+  }
+
+  if(lSh && rSh){
+    const shoulderCenter = [(lSh.x+rSh.x)/2,(lSh.y+rSh.y)/2];
+    const torsoAngle = Math.abs(Math.atan2(
+      shoulderCenter[1]-hipCenter[1],
+      shoulderCenter[0]-hipCenter[0]
+    ) * 180/Math.PI);
+
+    if(torsoAngle > 30){
+      feedback.push({
+        message:"Keep your back straight",
+        severity:"high"
+      });
+    }
+  }
+
+  return feedback;
+}
 
     function suggestPushupCorrections(kp) {
       const suggestions = [];
@@ -707,29 +857,47 @@
       return suggestions;
     }
     // ---------- Voice System ----------
-    function speak(message, force = false) {
-      if (!state.voiceEnabled) return;
+// ---------- Voice System ----------
 
-      const now = Date.now();
+function speak(message, force = false) {
 
-      if (!force) {
-      if (now - state.lastSpokenTime < state.speakCooldown) return;
-      if (message === state.lastSpokenMessage) return;
-      }
+  if (!state.voiceEnabled) return;
 
-      window.speechSynthesis.cancel();
+  const now = Date.now();
 
-      const speech = new SpeechSynthesisUtterance(message);
-      speech.lang = "en-US";
-      speech.rate = 1;
-      speech.pitch = 1;
+  if (!force) {
+    if (now - state.lastSpokenTime < state.speakCooldown) return;
+    if (message === state.lastSpokenMessage) return;
+  }
 
-      window.speechSynthesis.speak(speech);
+  window.speechSynthesis.cancel();
 
-      state.lastSpokenTime = now;
-      state.lastSpokenMessage = message;
-    }
-    
+  const speech = new SpeechSynthesisUtterance(message);
+  speech.lang = "en-US";
+  speech.rate = 1;
+  speech.pitch = 1;
+
+  window.speechSynthesis.speak(speech);
+
+  state.lastSpokenTime = now;
+  state.lastSpokenMessage = message;
+}
+
+
+// Prevent repeating the same mistake every frame
+function speakMistake(key, message) {
+
+  const now = Date.now();
+
+  if (!state.mistakeMemory[key] || now - state.mistakeMemory[key] > 4000) {
+
+    speak(message);
+
+    state.mistakeMemory[key] = now;
+
+  }
+
+}
     // ---------- Start app ----------
     window.addEventListener('load', init);
   </script>

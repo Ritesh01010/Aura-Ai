@@ -149,17 +149,17 @@ export default function LeaderboardPage() {
                       </Avatar>
                       <div>
                         <div className="text-lg font-bold text-white">Your Name</div>
-                        <Badge variant="secondary" className="bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 border-0 text-[10px] px-2 py-0.5">Intermediate</Badge>
+                        <Badge variant="secondary" className="bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 border-0 text-[10px] px-2 py-0.5">Remark</Badge>
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       <div className="rounded-lg bg-slate-900 p-3 text-center border border-slate-800">
-                        <div className="text-2xl font-bold text-white font-mono">#24</div>
+                        <div className="text-2xl font-bold text-white font-mono">#0</div>
                         <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-1">Global Rank</div>
                       </div>
                       <div className="rounded-lg bg-slate-900 p-3 text-center border border-slate-800">
-                        <div className="text-2xl font-bold text-emerald-400 font-mono">780</div>
+                        <div className="text-2xl font-bold text-emerald-400 font-mono">000</div>
                         <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-1">Points</div>
                       </div>
                     </div>
@@ -169,7 +169,7 @@ export default function LeaderboardPage() {
                         <ArrowUp className="h-4 w-4" />
                         <span>Rising Fast</span>
                       </div>
-                      <div className="text-xs text-emerald-500/70">Top 15%</div>
+                      <div className="text-xs text-emerald-500/70">Top 00%</div>
                     </div>
                   </div>
                 </div>

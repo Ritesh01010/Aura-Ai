@@ -162,23 +162,23 @@ export default function ProfilePage() {
 
         <div className="container px-4 md:px-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-8">
-              <TabsList className="w-full max-w-md bg-slate-900/80 border border-slate-800 p-1 h-auto rounded-full grid grid-cols-3">
+              {/* <TabsList className="w-full max-w-md bg-slate-900/80 border border-slate-800 p-1 h-auto rounded-full grid grid-cols-3">
                 <TabsTrigger value="overview" className="rounded-full py-2 text-slate-400 data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">Overview</TabsTrigger>
                 <TabsTrigger value="stats" className="rounded-full py-2 text-slate-400 data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">Statistics</TabsTrigger>
                 <TabsTrigger value="history" className="rounded-full py-2 text-slate-400 data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">History</TabsTrigger>
-              </TabsList>
-              <div className="container px-4 md:px-6 text-center">
+              </TabsList> */}
+              {/* <div className="container px-4 md:px-6 text-center">
                 <Badge variant="outline" className="mb-4 border-amber-500/30 bg-amber-500/10 text-amber-300 px-3 py-1 backdrop-blur-md mx-auto w-fit">
                     <Crown className="mr-1 h-3 w-3 fill-amber-500" />
                     Upcoming Features
                 </Badge>
-              </div>
+              </div> */}
 
               <TabsContent value="overview" className="space-y-8 animate-in fade-in-50 slide-in-from-bottom-4 duration-500">
                 
                 {/* Key Metrics */}
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                  <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
+                  {/* <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
                     <CardHeader className="pb-2 space-y-0">
                       <CardTitle className="text-sm font-medium text-slate-400">Weekly Goal</CardTitle>
                     </CardHeader>
@@ -192,9 +192,9 @@ export default function ProfilePage() {
                         <p className="text-xs text-slate-500">1 workout left to reach target</p>
                       </div>
                     </CardContent>
-                  </Card>
+                  </Card> */}
 
-                  <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
+                  {/* <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
                     <CardHeader className="pb-2 space-y-0">
                       <CardTitle className="text-sm font-medium text-slate-400">Calories Burned</CardTitle>
                     </CardHeader>
@@ -214,9 +214,9 @@ export default function ProfilePage() {
                           ))}
                       </div>
                     </CardContent>
-                  </Card>
+                  </Card> */}
 
-                  <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
+                  {/* <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
                     <CardHeader className="pb-2 space-y-0">
                       <CardTitle className="text-sm font-medium text-slate-400">Active Time</CardTitle>
                     </CardHeader>
@@ -230,9 +230,9 @@ export default function ProfilePage() {
                         <span>Avg 45m / session</span>
                       </div>
                     </CardContent>
-                  </Card>
+                  </Card> */}
 
-                  <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
+                  {/* <Card className="bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-violet-500/30 transition-colors">
                     <CardHeader className="pb-2 space-y-0">
                       <CardTitle className="text-sm font-medium text-slate-400">Current Streak</CardTitle>
                     </CardHeader>
@@ -252,7 +252,7 @@ export default function ProfilePage() {
                           ))}
                       </div>
                     </CardContent>
-                  </Card>
+                  </Card> */}
                 </div>
               </TabsContent>
             </Tabs>

@@ -20,14 +20,18 @@ export default function LoginPage() {
   const router = useRouter()
   const supabase = createClient()
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search)
-      if (params.get("signup") === "true") {
-        setActiveTab("signup")
-      }
+useEffect(() => {
+  router.prefetch("/")
+  router.prefetch("/training")
+  router.prefetch("/profile")
+
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get("signup") === "true") {
+      setActiveTab("signup")
     }
-  }, [])
+  }
+}, [])
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,7 +46,7 @@ export default function LoginPage() {
       alert(error.message)
     } else {
       router.push("/")
-      router.refresh()
+      
     }
     setLoading(false)
   }
@@ -135,9 +139,7 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="password" className="text-slate-300">Password</Label>
-                      <a href="#" className="text-xs text-violet-400 hover:text-violet-300 transition-colors">
-                        Forgot password?
-                      </a>
+                      
                     </div>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
