@@ -67,7 +67,6 @@ export default function Home() {
                 <div className="relative h-full w-full rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm overflow-hidden shadow-2xl transform rotate-y-12 hover:rotate-0 transition-transform duration-700">
                   {/* Simulated UI Interface */}
                   <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                    <Badge className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 border-0 backdrop-blur-md">98% Accuracy</Badge>
                     <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/10">
                       <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
                       <span className="text-[10px] font-mono text-white uppercase tracking-wider">LIVE REC</span>
@@ -221,7 +220,7 @@ export default function Home() {
                 Ready to Transform Your Fitness?
               </h2>
               <p className="text-slate-400 text-xl max-w-[700px] mx-auto">
-                Join thousands of users who have already leveled up their training with Aura's AI precision.
+                Not just workouts—precision training powered by AI.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <a href="/">
@@ -260,21 +259,8 @@ export default function Home() {
               <li><a href="/leaderboard" className="hover:text-violet-400 transition-colors">Leaderboard</a></li>
             </ul>
           </div>
-          <div className="space-y-4">
-            <h3 className="font-bold text-white">Company</h3>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-violet-400 transition-colors">About</a></li>
-              <li><a href="#" className="hover:text-violet-400 transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-violet-400 transition-colors">Careers</a></li>
-            </ul>
-          </div>
-          <div className="space-y-4">
-            <h3 className="font-bold text-white">Legal</h3>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-violet-400 transition-colors">Privacy</a></li>
-              <li><a href="#" className="hover:text-violet-400 transition-colors">Terms</a></li>
-            </ul>
-          </div>
+          
+          
         </div>
         <div className="container px-4 md:px-6 mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-600">
           © {new Date().getFullYear()} Aura Fitness. All rights reserved.
